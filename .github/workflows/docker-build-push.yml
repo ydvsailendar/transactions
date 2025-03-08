@@ -84,6 +84,7 @@ jobs:
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.licenses=MIT
+            org.opencontainers.image.description="docker bake multi platform parallel builds"
 
       - name: Build and push Docker images
         uses: docker/bake-action@v2
