@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction Tracker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #4299e1;
+        --primary-dark: #3182ce;
+        --primary-light: #ebf8ff;
+        --success: #48bb78;
+        --danger: #f56565;
+        --gray-50: #f9fafb;
+        --gray-100: #f5f7fa;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e0;
+        --gray-400: #a0aec0;
+        --gray-500: #718096;
+        --gray-600: #4a5568;
+        --gray-700: #2d3748;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --radius: 8px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: var(--gray-100);
+        color: var(--gray-700);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: var(--gray-700);
+        font-size: 2rem;
+        font-weight: 600;
+      }
+
+      .card {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+      }
+
+      .card h2 {
+        color: var(--gray-700);
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--gray-600);
+      }
+
+      .input-group {
+        position: relative;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        font-size: 1rem;
+        color: var(--gray-700);
+        background-color: white;
+        transition: all 0.2s;
+      }
+
+      select {
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: white;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1em;
+        padding-right: 2.5rem;
+        color: var(--gray-700); /* Ensure the text color is set */
+      }
+
+      select option {
+        padding: 0.75rem;
+        color: var(--gray-700) !important; /* Ensure option text color */
+        background-color: white !important; /* Ensure option background color */
+      }
+
+      select option:hover {
+        background-color: var(--primary-light);
+      }
+
+      select:focus option:checked {
+        background: var(--primary-light);
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--gray-400);
+      }
+
+      button {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        font-weight: 500;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      button:hover {
+        background-color: var(--primary-dark);
+      }
+
+      button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .transactions-list .transaction-item {
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--gray-200);
+        transition: background-color 0.2s;
+      }
+
+      .transactions-list .transaction-item:hover {
+        background-color: var(--gray-50);
+      }
+
+      .transactions-list .transaction-item:last-child {
+        border-bottom: none;
+      }
+
+      .transaction-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .transaction-name {
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      .transaction-amount {
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: var(--radius);
+      }
+
+      .lend .transaction-amount {
+        color: var(--success);
+        background-color: #f0fff4;
+      }
+
+      .borrow .transaction-amount {
+        color: var(--danger);
+        background-color: #fff5f5;
+      }
+
+      .transaction-meta {
+        color: var(--gray-500);
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .transaction-description {
+        color: var(--gray-600);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--gray-500);
+      }
+
+      .error-state {
+        text-align: center;
+        padding: 2rem;
+        color: var(--danger);
+        background-color: #fff5f5;
+        border-radius: var(--radius);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .card {
+          padding: 1.5rem;
+        }
+
+        .transaction-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .transaction-amount {
+          align-self: flex-end;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Transaction Tracker</h1>
+      </div>
+
+      <div class="card">
+        <h2>Add New Transaction</h2>
+        <form id="transactionForm">
+          <div class="form-group">
+            <label for="personName">Person Name</label>
+            <input
+              type="text"
+              id="personName"
+              required
+              placeholder="Enter person's name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <div class="input-group">
+              <input
+                type="number"
+                id="amount"
+                step="0.01"
+                required
+                placeholder="Enter amount"
+                min="0"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="type">Type</label>
+            <select id="type" required>
+              <option value="LEND">Lend</option>
+              <option value="BORROW">Borrow</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+              id="description"
+              rows="3"
+              placeholder="Enter transaction details"
+            ></textarea>
+          </div>
+          <button type="submit">Add Transaction</button>
+        </form>
+      </div>
+
+      <div class="card transactions-list">
+        <h2>Recent Transactions</h2>
+        <div id="transactionsList"></div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL =
+        window.location.hostname === "localhost"
+          ? "http://localhost:3000"
+          : `http://${window.location.hostname}:3000`;
+
+      async function loadTransactions() {
+        try {
+          const response = await fetch(`${API_URL}/transactions`);
+          if (!response.ok) throw new Error("Failed to fetch transactions");
+
+          const transactions = await response.json();
+          const list = document.getElementById("transactionsList");
+
+          if (transactions.length === 0) {
+            list.innerHTML = `
+              <div class="empty-state">
+                No transactions found. Add your first transaction above.
+              </div>
+            `;
+            return;
+          }
+
+          list.innerHTML = transactions
+            .map(
+              (t) => `
+              <div class="transaction-item ${t.type.toLowerCase()}">
+                <div class="transaction-header">
+                  <span class="transaction-name">${t.person_name}</span>
+                  <span class="transaction-amount">
+                    ${t.type === "LEND" ? "+" : "-"}$${Number(t.amount).toFixed(
+                2
+              )}
+                  </span>
+                </div>
+                <div class="transaction-meta">
+                  ${new Date(t.created_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+                ${
+                  t.description
+                    ? `
+                  <div class="transaction-description">${t.description}</div>
+                `
+                    : ""
+                }
+              </div>
+            `
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error loading transactions:", error);
+          document.getElementById("transactionsList").innerHTML = `
+            <div class="error-state">
+              Failed to load transactions. Please try again later.
+            </div>
+          `;
+        }
+      }
+
+      document
+        .getElementById("transactionForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const button = e.target.querySelector("button");
+          button.disabled = true;
+          button.textContent = "Adding...";
+
+          try {
+            const transaction = {
+              person_name: document.getElementById("personName").value.trim(),
+              amount: parseFloat(document.getElementById("amount").value),
+              type: document.getElementById("type").value,
+              description: document.getElementById("description").value.trim(),
+            };
+
+            const response = await fetch(`${API_URL}/transactions`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(transaction),
+            });
+
+            if (!response.ok) throw new Error("Failed to add transaction");
+
+            await loadTransactions();
+            e.target.reset();
+          } catch (error) {
+            console.error("Error adding transaction:", error);
+            alert("Failed to add transaction. Please try again.");
+          } finally {
+            button.disabled = false;
+            button.textContent = "Add Transaction";
+          }
+        });
+
+      loadTransactions();
+    </script>
+  </body>
+</html>
