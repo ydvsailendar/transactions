@@ -61,16 +61,6 @@ jobs:
           git tag "v${NEW_VERSION}"
           git push origin "v${NEW_VERSION}"
 
-      - name: Get release version
-        id: release_version
-        run: |
-          # Check if this is a release build and get the release version
-          if [[ "${GITHUB_EVENT_NAME}" == "release" && "${GITHUB_EVENT_ACTION}" == "published" ]]; then
-            echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          else
-            echo "RELEASE_VERSION=${{ env.VERSION }}" >> $GITHUB_ENV
-          fi
-
       - name: Generate Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -81,7 +71,6 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/db
           tags: |
             type=raw,value=${{ env.VERSION }}
-            type=raw,value=${{ env.RELEASE_VERSION }}
             type=raw,value=latest
             type=sha
 
