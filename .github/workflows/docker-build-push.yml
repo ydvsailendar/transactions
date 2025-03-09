@@ -98,3 +98,7 @@ jobs:
           DB_NAME: ${{ env.POSTGRES_DB }}
           DB_PORT: 5432
           API_URL: http://localhost:3000
+          DOCKER_BUILDKIT: 1
+          BUILDX_NO_DEFAULT_LOAD: 1
+          BUILDKIT_PROGRESS: plain
+          BUILDX_PROVENANCE: false
