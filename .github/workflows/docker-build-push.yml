@@ -85,6 +85,9 @@ jobs:
             cwd://${{ steps.meta.outputs.bake-file }}
           push: true
           targets: transactions
+          set: |
+            *.cache-from=type=gha
+            *.cache-to=type=gha,mode=max
         env:
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
