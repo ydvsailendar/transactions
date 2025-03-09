@@ -75,7 +75,6 @@ jobs:
           tags: |
             type=raw,value=${{ env.VERSION }}
             type=raw,value=latest
-            type=ref,event=branch
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
