@@ -81,7 +81,7 @@ jobs:
         with:
           files: |
             ./docker-bake.hcl
-            cwd://${{ steps.meta.outputs.json }}
+            cwd://${{ steps.meta.outputs.bake-file }}
           push: true
           targets: transactions
         env:
