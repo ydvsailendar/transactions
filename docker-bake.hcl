@@ -4,21 +4,21 @@ target "backend" {
   context = "."
   dockerfile = "Dockerfile.backend"
   inherits = ["docker-metadata-action"]
-  platforms = ["linux/amd64", "linux/arm64"]
+  platforms = ["linux/amd64", "linux/arm64", "linux/386"]
 }
 
 target "frontend" {
   context = "."
   dockerfile = "Dockerfile.frontend"
   inherits = ["docker-metadata-action"]
-  platforms = ["linux/amd64", "linux/arm64"]
+  platforms = ["linux/amd64", "linux/arm64", "linux/386"]
 }
 
 target "db" {
   context = "."
   dockerfile = "Dockerfile.db"
   inherits = ["docker-metadata-action"]
-  platforms = ["linux/amd64", "linux/arm64"]
+  platforms = ["linux/amd64", "linux/arm64", "linux/386"]
 }
 
 group "transactions" {
